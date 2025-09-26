@@ -4,17 +4,14 @@
 Replay-Engine is a **high-performance, deterministic, multi-threaded event replay engine** written in C++.  
 It is designed to process millions of time-ordered events per second with bit-identical replay guarantees, regardless of thread scheduling or hardware concurrency.
 
----
 
 ## Why?
 Modern high-performance systems like financial trading engines and real-time distributed databases require deterministic correctness replays, ultra-low latency, and concurrency at scale.
 
---
 
 ## How?
 This can be achieved through lock-free cached data structures, deterministic scheduling across threads, and NUMA-aware memory management.
 
----
 
 ## Architecture
 
