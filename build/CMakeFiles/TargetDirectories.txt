@@ -1,0 +1,3 @@
+/Users/raminaji/Replay Engine/build/CMakeFiles/replay_engine.dir
+/Users/raminaji/Replay Engine/build/CMakeFiles/edit_cache.dir
+/Users/raminaji/Replay Engine/build/CMakeFiles/rebuild_cache.dir

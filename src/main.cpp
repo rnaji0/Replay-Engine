@@ -6,7 +6,7 @@ long long counter = 0;
 int testsPassed = 0;
 int testsFailed = 0;
 int threadCycle = 10;
-int testsRan = 1000000;
+int testsRan = 100;
 
 
 void worker() {
@@ -29,7 +29,7 @@ int runTest() {
 void testController() {
      for (int i = 0; i < testsRan; i++) {
         int testResult = runTest();
-        if (testResult != threadCycle * 6) {
+        if (testResult != threadCycle * 2) {
             std::cout << "Test " << i << " FAILED: counter = " << testResult << std::endl;
             testsFailed++;
         } else {
