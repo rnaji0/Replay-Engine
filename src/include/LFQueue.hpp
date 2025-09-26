@@ -16,7 +16,7 @@ public:
 private:
     std::atomic<Node<T>*> head;
     std::atomic<Node<T>*> tail;
-    std::atomic<size_t> queueSize;
+    std::atomic<size_t> queueSize(0);
 };
 
 #endif
