@@ -64,7 +64,7 @@ int main() {
 }
 ```
 
-Our results show us how each addition of a thread exponentially decreases the pass rate and accuracy which we test for deterministic operations.
+Our results show us how each addition of a thread exponentially decreases the pass rate and accuracy which we test for in deterministic operations.
 
 | Threads | Tests Run   | Pass Rate (%) |
 |---------|-------------|---------------|
@@ -73,8 +73,6 @@ Our results show us how each addition of a thread exponentially decreases the pa
 | 3       | 1,000,000   | 64.5759       |
 | 4       | 1,000,000   | 61.3893       |
 | 5       | 1,000,000   | 55.8582       |
-| 8       | 1,000,000   | 29.9274       |
-| 9       | 1,000,000   | 27.2472       |
 | 10      | 1,000,000   | 24.2407       |
 
 
