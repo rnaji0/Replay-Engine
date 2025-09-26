@@ -3,9 +3,9 @@
 
 template <typename T>
 struct Node {
-    Event value;
+    T value;
     Node* next;
-    Node(const Event& val) : value(val), next(nullptr) {};
+    Node(const T& val) : value(val), next(nullptr) {};
 
 };
 
