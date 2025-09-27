@@ -21,8 +21,8 @@ struct Event {
         : type(Type::CancelOrder), orderId(oid), open(false) { }
 
     //trade
-    Event(uint64_t ts, uint64_t oid, double p, uint32_t q, char a) 
-        : type(Type::Trade), timestamp(ts), orderId(oid), price(p), quantity(q), action(a), open(false) {}
+    Event(uint64_t ts, uint64_t oid, double p, uint32_t q, char a, bool o) 
+        : type(Type::Trade), timestamp(ts), orderId(oid), price(p), quantity(q), action(a), open(o) {}
 
     //modify
     Event(uint64_t oid, double p, uint32_t q) 
