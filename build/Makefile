@@ -225,30 +225,6 @@ src/src/TestModule.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/replay_engine.dir/build.make CMakeFiles/replay_engine.dir/src/src/TestModule.cpp.s
 .PHONY : src/src/TestModule.cpp.s
 
-src/src/event.o: src/src/event.cpp.o
-.PHONY : src/src/event.o
-
-# target to build an object file
-src/src/event.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/replay_engine.dir/build.make CMakeFiles/replay_engine.dir/src/src/event.cpp.o
-.PHONY : src/src/event.cpp.o
-
-src/src/event.i: src/src/event.cpp.i
-.PHONY : src/src/event.i
-
-# target to preprocess a source file
-src/src/event.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/replay_engine.dir/build.make CMakeFiles/replay_engine.dir/src/src/event.cpp.i
-.PHONY : src/src/event.cpp.i
-
-src/src/event.s: src/src/event.cpp.s
-.PHONY : src/src/event.s
-
-# target to generate assembly for a file
-src/src/event.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/replay_engine.dir/build.make CMakeFiles/replay_engine.dir/src/src/event.cpp.s
-.PHONY : src/src/event.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -270,9 +246,6 @@ help:
 	@echo "... src/src/TestModule.o"
 	@echo "... src/src/TestModule.i"
 	@echo "... src/src/TestModule.s"
-	@echo "... src/src/event.o"
-	@echo "... src/src/event.i"
-	@echo "... src/src/event.s"
 .PHONY : help
 
 

@@ -85,12 +85,12 @@ clean: CMakeFiles/replay_engine.dir/clean
 CMakeFiles/replay_engine.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/replay_engine.dir/build.make CMakeFiles/replay_engine.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/replay_engine.dir/build.make CMakeFiles/replay_engine.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/raminaji/Replay Engine/build/CMakeFiles" --progress-num=1,2,3,4,5,6 "Built target replay_engine"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/raminaji/Replay Engine/build/CMakeFiles" --progress-num=1,2,3,4,5 "Built target replay_engine"
 .PHONY : CMakeFiles/replay_engine.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/replay_engine.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/raminaji/Replay Engine/build/CMakeFiles" 6
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/raminaji/Replay Engine/build/CMakeFiles" 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/replay_engine.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/raminaji/Replay Engine/build/CMakeFiles" 0
 .PHONY : CMakeFiles/replay_engine.dir/rule
@@ -102,7 +102,7 @@ replay_engine: CMakeFiles/replay_engine.dir/rule
 # codegen rule for target.
 CMakeFiles/replay_engine.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/replay_engine.dir/build.make CMakeFiles/replay_engine.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/raminaji/Replay Engine/build/CMakeFiles" --progress-num=1,2,3,4,5,6 "Finished codegen for target replay_engine"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/raminaji/Replay Engine/build/CMakeFiles" --progress-num=1,2,3,4,5 "Finished codegen for target replay_engine"
 .PHONY : CMakeFiles/replay_engine.dir/codegen
 
 # clean rule for target.

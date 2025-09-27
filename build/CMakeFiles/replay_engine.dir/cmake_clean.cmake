@@ -7,8 +7,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/replay_engine.dir/src/src/TestEngine.cpp.o.d"
   "CMakeFiles/replay_engine.dir/src/src/TestModule.cpp.o"
   "CMakeFiles/replay_engine.dir/src/src/TestModule.cpp.o.d"
-  "CMakeFiles/replay_engine.dir/src/src/event.cpp.o"
-  "CMakeFiles/replay_engine.dir/src/src/event.cpp.o.d"
   "replay_engine"
   "replay_engine.pdb"
 )
