@@ -969,7 +969,9 @@ CMakeFiles/replay_engine.dir/src/main.cpp.o: /Users/raminaji/Replay\ Engine/src/
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/limits.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdarg.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stddef.h \
-  /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h
+  /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h \
+  /Users/raminaji/Replay\ Engine/src/include/LFQueue.hpp \
+  /Users/raminaji/Replay\ Engine/src/include/event.hpp
 
 CMakeFiles/replay_engine.dir/src/src/ReplayEngine.cpp.o: /Users/raminaji/Replay\ Engine/src/src/ReplayEngine.cpp
 
@@ -983,6 +985,10 @@ CMakeFiles/replay_engine.dir/src/src/TestModule.cpp.o: /Users/raminaji/Replay\ E
 /Users/raminaji/Replay\ Engine/src/src/TestEngine.cpp:
 
 /Users/raminaji/Replay\ Engine/src/src/ReplayEngine.cpp:
+
+/Users/raminaji/Replay\ Engine/src/include/event.hpp:
+
+/Users/raminaji/Replay\ Engine/src/include/LFQueue.hpp:
 
 /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h:
 

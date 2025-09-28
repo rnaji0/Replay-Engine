@@ -15,6 +15,9 @@ struct Event {
 
     //constructors - using initializer lists is more efficient as we skip default assignment
 
+    //dummy
+    Event() : type(Type::NewOrder), timestamp(0), orderId(0), price(0), quantity(0), action(' '), open(false) { }
+
     //new
     Event(uint64_t ts, uint64_t oid, double p, uint32_t q, char a)
         : type(Type::NewOrder), timestamp(ts), orderId(oid), price(p), quantity(q), action(a), open(true) { }

@@ -29,7 +29,7 @@ private:
 
 template <typename T>
 LFQueue<T>::LFQueue() : queueSize(0) {
-    Node* dummy = new Node(T{});
+    Node* dummy = new Node(T{}); // dummy node
     head.store(dummy);
     tail.store(dummy);
 }
