@@ -53,6 +53,7 @@ void LFQueue<T>::enqueue(const T& event) {
 
         if (nextPtr == nullptr) {
             if (tailPtr->next.compare_exchange_weak(nextPtr, newNode)) {
+                tail.compare_exchange_weak(tailPtr, newNode);
                 queueSize.fetch_add(1, std::memory_order_relaxed);
                 break;
             }
