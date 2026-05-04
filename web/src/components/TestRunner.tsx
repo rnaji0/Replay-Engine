@@ -84,7 +84,7 @@ export default function TestRunner() {
                       {r.status === 'passed' ? 'Pass' : 'Fail'}
                     </span>
                     <span className="text-[#0d0d0d]">{r.name}</span>
-                    <span className="text-[#d4d4d4]">&mdash;</span>
+                    <span className="text-[#d4d4d4]">&middot;</span>
                     <span className="text-[#737373] text-[12px] truncate">{r.message}</span>
                     <span className="text-[#d4d4d4] text-[11px] ml-auto shrink-0 tabular-nums">{r.durationMs.toFixed(1)}ms</span>
                   </div>

@@ -89,7 +89,7 @@ export default function DeterminismMatrix() {
           </table>
           {rows.length > 0 && rows.every(r => r.allMatch) && rows.every(r => r.checksums[0] === rows[0].checksums[0]) && (
             <p className="text-[13px] text-[#16a34a] mt-4">
-              All configurations produce identical checksums &mdash; deterministic replay verified.
+              All configurations produce identical checksums. Deterministic replay verified.
             </p>
           )}
         </div>
