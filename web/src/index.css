@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', 'Helvetica Neue', 'Arial', system-ui, sans-serif;
+  --font-serif: 'Georgia', 'Times New Roman', serif;
+  --font-mono: 'SF Mono', 'Consolas', 'Monaco', monospace;
+}
+
+body {
+  margin: 0;
+  background: #f5f0eb;
+  color: #1a1a1a;
+  font-family: 'Inter', 'Helvetica Neue', 'Arial', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+::selection {
+  background: #1a1a1a;
+  color: #f5f0eb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 2px;
+  background: #c4bfb8;
+  border-radius: 1px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  cursor: pointer;
+}
