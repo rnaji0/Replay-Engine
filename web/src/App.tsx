@@ -43,55 +43,55 @@ export default function App() {
   }, []);
 
   return (
-    <div className="max-w-[880px] mx-auto px-6 pt-20 pb-12">
+    <div className="max-w-[760px] mx-auto px-6 pt-24 pb-16">
       <Header />
 
-      <section className="mb-14">
+      <section className="mb-20">
         <SectionLabel>Simulation</SectionLabel>
         <Controls onRun={handleRun} onStop={handleStop} running={running} />
       </section>
 
-      <section className="mb-14">
+      <section className="mb-20">
         <SectionLabel>Pipeline</SectionLabel>
         <PipelineView snapshot={snapshot} />
       </section>
 
       {snapshot && (
-        <section className="mb-14">
+        <section className="mb-20">
           <SectionLabel>Metrics</SectionLabel>
           <MetricsPanel snapshot={snapshot} />
         </section>
       )}
 
       {snapshot && snapshot.results.length > 0 && (
-        <section className="mb-14">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <section className="mb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             <div>
               <SectionLabel>Worker Distribution</SectionLabel>
               <ThroughputChart results={snapshot.results} workerCount={workerCount} />
             </div>
             <div>
-              <SectionLabel>Latency Histogram</SectionLabel>
+              <SectionLabel>Latency</SectionLabel>
               <LatencyHistogram results={snapshot.results} />
             </div>
           </div>
         </section>
       )}
 
-      <div className="border-t border-[#f0f0f0] my-14" />
+      <hr className="border-[#f0f0f0] my-20" />
 
-      <section className="mb-14">
+      <section className="mb-20">
         <DeterminismMatrix />
       </section>
 
-      <div className="border-t border-[#f0f0f0] my-14" />
+      <hr className="border-[#f0f0f0] my-20" />
 
-      <section className="mb-20">
+      <section className="mb-24">
         <TestRunner />
       </section>
 
-      <footer className="text-[13px] text-[#d4d4d4] text-center pb-8">
-        Replay Engine &mdash; C++20, lock-free MPMC queues, deterministic multi-threaded replay.
+      <footer className="text-[13px] text-[#d4d4d4] text-center pb-12">
+        Replay Engine
       </footer>
     </div>
   );
