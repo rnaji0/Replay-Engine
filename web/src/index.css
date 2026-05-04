@@ -1,25 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Inter', 'Helvetica Neue', 'Arial', system-ui, sans-serif;
-  --font-serif: 'Georgia', 'Times New Roman', serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
   --font-mono: 'SF Mono', 'Consolas', 'Monaco', monospace;
 }
 
 body {
   margin: 0;
-  background: #f5f0eb;
-  color: #1a1a1a;
-  font-family: 'Inter', 'Helvetica Neue', 'Arial', system-ui, sans-serif;
+  background: #ffffff;
+  color: #0d0d0d;
+  font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 15px;
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 ::selection {
-  background: #1a1a1a;
-  color: #f5f0eb;
+  background: #0d0d0d;
+  color: #ffffff;
 }
 
 * {
@@ -29,18 +28,23 @@ body {
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
-  height: 2px;
-  background: #c4bfb8;
-  border-radius: 1px;
+  height: 3px;
+  background: #e5e5e5;
+  border-radius: 2px;
   outline: none;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: #1a1a1a;
+  background: #0d0d0d;
   cursor: pointer;
+  transition: transform 0.15s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
 }

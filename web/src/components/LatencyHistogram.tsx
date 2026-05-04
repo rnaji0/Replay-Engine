@@ -31,22 +31,22 @@ export default function LatencyHistogram({ results }: { results: ProcessedResult
   if (results.length === 0) return null;
 
   return (
-    <div className="space-y-1">
+    <div className="space-y-1.5">
       {bins.map((b, i) => (
         <div key={i} className="flex items-center gap-2">
-          <div className="w-20 text-right text-[11px] text-[#6b6b6b] font-mono shrink-0">
+          <div className="w-16 text-right text-[11px] text-[#a3a3a3] font-mono shrink-0 tabular-nums">
             {b.lo.toFixed(0)}
           </div>
-          <div className="flex-1 h-4 bg-[#eae5df] relative">
+          <div className="flex-1 h-5 bg-[#f7f7f7] rounded-full relative overflow-hidden">
             <div
-              className="h-full bg-[#1a1a1a] opacity-70"
+              className="h-full bg-[#0d0d0d] opacity-60 rounded-full"
               style={{ width: `${b.pct}%` }}
             />
           </div>
-          <div className="w-12 text-[11px] text-[#6b6b6b] font-mono shrink-0">{b.count}</div>
+          <div className="w-10 text-[11px] text-[#a3a3a3] font-mono shrink-0 tabular-nums">{b.count}</div>
         </div>
       ))}
-      <div className="text-[11px] text-[#6b6b6b] mt-1">Latency distribution (ns)</div>
+      <div className="text-[12px] text-[#a3a3a3] mt-2">Latency distribution (ns)</div>
     </div>
   );
 }

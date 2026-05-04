@@ -1,6 +1,6 @@
 export default function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-[11px] font-sans font-medium tracking-[0.12em] uppercase text-[#6b6b6b] mb-4">
+    <h2 className="text-[13px] font-medium tracking-[-0.01em] text-[#0d0d0d] mb-5">
       {children}
     </h2>
   );

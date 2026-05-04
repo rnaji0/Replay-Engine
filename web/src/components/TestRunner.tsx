@@ -26,65 +26,67 @@ export default function TestRunner() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-5">
         <SectionLabel>Test Suite</SectionLabel>
         <button
           onClick={run}
           disabled={running}
-          className="text-[12px] px-4 py-1.5 border border-[#d4d0cb] hover:border-[#1a1a1a] transition-colors cursor-pointer bg-transparent disabled:opacity-50"
+          className="text-[13px] px-5 py-2 rounded-full border border-[#e5e5e5] hover:border-[#0d0d0d] transition-colors cursor-pointer bg-white disabled:opacity-40 font-medium"
         >
           {running ? 'Running...' : 'Run All Tests'}
         </button>
       </div>
 
       {results.length === 0 && !running && (
-        <p className="text-[13px] text-[#6b6b6b]">
+        <p className="text-[14px] text-[#737373]">
           Runs the full 20-test suite: determinism, stress, memory, metrics, and fault injection.
         </p>
       )}
 
       {running && (
-        <p className="text-[13px] text-[#6b6b6b] animate-pulse">Running tests...</p>
+        <p className="text-[14px] text-[#737373] animate-pulse">Running tests...</p>
       )}
 
       {results.length > 0 && (
         <div>
-          <div className="flex gap-6 mb-5 text-[13px]">
-            <span>
-              <span className="font-sans font-medium text-lg mr-1">{total}</span>
-              <span className="text-[#6b6b6b]">total</span>
-            </span>
-            <span>
-              <span className="font-sans font-medium text-lg mr-1 text-[#2d6a3f]">{passed}</span>
-              <span className="text-[#6b6b6b]">passed</span>
-            </span>
+          <div className="flex gap-5 mb-6 text-[14px]">
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-[22px] font-medium tabular-nums">{total}</span>
+              <span className="text-[#a3a3a3]">total</span>
+            </div>
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-[22px] font-medium tabular-nums text-[#16a34a]">{passed}</span>
+              <span className="text-[#a3a3a3]">passed</span>
+            </div>
             {failed > 0 && (
-              <span>
-                <span className="font-sans font-medium text-lg mr-1 text-[#8b2525]">{failed}</span>
-                <span className="text-[#6b6b6b]">failed</span>
-              </span>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-[22px] font-medium tabular-nums text-[#dc2626]">{failed}</span>
+                <span className="text-[#a3a3a3]">failed</span>
+              </div>
             )}
-            <span>
-              <span className="font-sans font-medium text-lg mr-1">{totalMs.toFixed(1)}</span>
-              <span className="text-[#6b6b6b]">ms</span>
-            </span>
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-[22px] font-medium tabular-nums">{totalMs.toFixed(1)}</span>
+              <span className="text-[#a3a3a3]">ms</span>
+            </div>
           </div>
 
           {modules.map(mod => (
-            <div key={mod} className="mb-4">
-              <div className="text-[12px] font-medium text-[#1a1a1a] mb-2">{mod}</div>
-              <div className="space-y-1">
+            <div key={mod} className="mb-5">
+              <div className="text-[13px] font-medium text-[#0d0d0d] mb-2.5">{mod}</div>
+              <div className="space-y-1.5">
                 {results.filter(r => r.module === mod).map((r, i) => (
                   <div key={i} className="flex items-baseline gap-3 text-[13px]">
-                    <span className={`font-mono text-[11px] w-[42px] shrink-0 ${
-                      r.status === 'passed' ? 'text-[#2d6a3f]' : 'text-[#8b2525]'
+                    <span className={`font-mono text-[11px] shrink-0 inline-flex px-2 py-0.5 rounded-full ${
+                      r.status === 'passed'
+                        ? 'bg-[#ecfdf5] text-[#16a34a]'
+                        : 'bg-[#fef2f2] text-[#dc2626]'
                     }`}>
-                      {r.status === 'passed' ? 'PASS' : 'FAIL'}
+                      {r.status === 'passed' ? 'Pass' : 'Fail'}
                     </span>
-                    <span className="text-[#1a1a1a]">{r.name}</span>
-                    <span className="text-[#c4bfb8]">&mdash;</span>
-                    <span className="text-[#6b6b6b] text-[12px] truncate">{r.message}</span>
-                    <span className="text-[#c4bfb8] text-[11px] ml-auto shrink-0">{r.durationMs.toFixed(1)}ms</span>
+                    <span className="text-[#0d0d0d]">{r.name}</span>
+                    <span className="text-[#d4d4d4]">&mdash;</span>
+                    <span className="text-[#737373] text-[12px] truncate">{r.message}</span>
+                    <span className="text-[#d4d4d4] text-[11px] ml-auto shrink-0 tabular-nums">{r.durationMs.toFixed(1)}ms</span>
                   </div>
                 ))}
               </div>

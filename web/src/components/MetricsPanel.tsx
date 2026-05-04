@@ -3,8 +3,8 @@ import type { SimulationSnapshot } from '../engine/types';
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <div className="text-[11px] text-[#6b6b6b] uppercase tracking-[0.08em] mb-0.5">{label}</div>
-      <div className="font-sans font-medium text-lg text-[#1a1a1a]">{value}</div>
+      <div className="text-[12px] text-[#a3a3a3] mb-1">{label}</div>
+      <div className="text-[18px] font-medium text-[#0d0d0d] tabular-nums">{value}</div>
     </div>
   );
 }

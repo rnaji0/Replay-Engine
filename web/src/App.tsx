@@ -43,33 +43,29 @@ export default function App() {
   }, []);
 
   return (
-    <div className="max-w-[900px] mx-auto px-6 py-16">
+    <div className="max-w-[880px] mx-auto px-6 pt-20 pb-12">
       <Header />
 
-      {/* Simulation Controls */}
-      <section className="mb-12">
+      <section className="mb-14">
         <SectionLabel>Simulation</SectionLabel>
         <Controls onRun={handleRun} onStop={handleStop} running={running} />
       </section>
 
-      {/* Pipeline Visualization */}
-      <section className="mb-12">
+      <section className="mb-14">
         <SectionLabel>Pipeline</SectionLabel>
         <PipelineView snapshot={snapshot} />
       </section>
 
-      {/* Live Metrics */}
       {snapshot && (
-        <section className="mb-12">
+        <section className="mb-14">
           <SectionLabel>Metrics</SectionLabel>
           <MetricsPanel snapshot={snapshot} />
         </section>
       )}
 
-      {/* Worker Distribution & Latency */}
       {snapshot && snapshot.results.length > 0 && (
-        <section className="mb-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <section className="mb-14">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             <div>
               <SectionLabel>Worker Distribution</SectionLabel>
               <ThroughputChart results={snapshot.results} workerCount={workerCount} />
@@ -82,24 +78,19 @@ export default function App() {
         </section>
       )}
 
-      {/* Divider */}
-      <div className="border-t border-[#d4d0cb] my-12" />
+      <div className="border-t border-[#f0f0f0] my-14" />
 
-      {/* Determinism Verification */}
-      <section className="mb-12">
+      <section className="mb-14">
         <DeterminismMatrix />
       </section>
 
-      {/* Divider */}
-      <div className="border-t border-[#d4d0cb] my-12" />
+      <div className="border-t border-[#f0f0f0] my-14" />
 
-      {/* Test Suite */}
-      <section className="mb-16">
+      <section className="mb-20">
         <TestRunner />
       </section>
 
-      {/* Footer */}
-      <footer className="text-[12px] text-[#c4bfb8] pb-8">
+      <footer className="text-[13px] text-[#d4d4d4] text-center pb-8">
         Replay Engine &mdash; C++20, lock-free MPMC queues, deterministic multi-threaded replay.
       </footer>
     </div>
