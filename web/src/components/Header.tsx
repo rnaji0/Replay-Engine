@@ -7,6 +7,9 @@ export default function Header() {
       <p className="text-[#737373] text-[15px] max-w-[480px] mx-auto">
         Lock-free multi-threaded deterministic replay. 3.5M events/sec, bit-identical across runs.
       </p>
+      <p className="text-[#a3a3a3] text-[12px] mt-3">
+        TypeScript-ported interactive demo of the C++ engine
+      </p>
     </header>
   );
 }
