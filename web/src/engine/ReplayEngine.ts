@@ -73,7 +73,7 @@ function computeChecksum(results: ProcessedResult[]): number {
 
 export function generateEvents(config: SimulationConfig): Event[] {
   const events: Event[] = [];
-  const types = config.eventTypes.length > 0 ? config.eventTypes : ['NewOrder'];
+  const types = config.eventTypes.length > 0 ? config.eventTypes : ['NewOrder' as EventType];
   for (let i = 0; i < config.eventCount; i++) {
     const type = types[i % types.length];
     events.push(createEvent(type, i));

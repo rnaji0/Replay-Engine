@@ -21,7 +21,7 @@ export function runDeterminismTests(): TestResult[] {
 
   // Bit-identical checksum
   {
-    const [, ms] = timed(() => {});
+    timed(() => {});
     const s = performance.now();
     const cfg = { eventCount: 2000, workerCount: 2, eventTypes: ['NewOrder' as EventType], batchSize: 2000 };
     const checksums: number[] = [];
