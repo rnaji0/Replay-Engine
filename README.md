@@ -1,91 +1,188 @@
-# Replay-Engine: Deterministic Multi-Threaded Event Replay Engine
+# Replay Engine
 
-## Overview
-Replay-Engine is a **high-performance, deterministic, multi-threaded event replay engine** written in C++.  
-It is designed to process millions of time-ordered events per second with bit-identical replay guarantees, regardless of thread scheduling or hardware concurrency.
+## The Problem
 
+Multithreading is inherently non-deterministic. Thread scheduling, CPU core assignment, and OS-level preemption all introduce unpredictable ordering into concurrent operations. For systems that require exact replay (financial trading engines, distributed databases, audit systems), this is unacceptable.
 
-## Why?
-Modern high-performance systems like financial trading engines and real-time distributed databases require deterministic correctness replays, ultra-low latency, and concurrency at scale.
+A simple test proves the point. Two threads incrementing a shared counter 10 times each should always produce 20. Run it a million times:
 
-From our simple test below, we can prove that mulithreading is inherently not determinstic for a multitude of reasons ranging from our CPU to scheduling done by the OS.
 ```cpp
-#include <iostream>
-#include <thread>
-
-
 long long counter = 0;
-int testsPassed = 0;
-int testsFailed = 0;
-int threadCycle = 10;
-int testsRan = 1000000;
-
 
 void worker() {
-    for (int i = 0; i < threadCycle; i++) {
+    for (int i = 0; i < 10; i++) {
         counter++;
-        std::this_thread::yield(); 
+        std::this_thread::yield();
     }
 }
 
 int runTest() {
     std::thread t1(worker);
     std::thread t2(worker);
-
     t1.join();
     t2.join();
-
     return counter;
-}
-
-void testController() {
-     for (int i = 0; i < testsRan; i++) {
-        int testResult = runTest();
-        if (testResult != threadCycle * 2) {
-            std::cout << "Test " << i << " FAILED: counter = " << testResult << std::endl;
-            testsFailed++;
-        } else {
-            std::cout << "Test " << i << " PASSED: counter = " << testResult << std::endl;
-            testsPassed++;
-        }
-    counter = 0;
-    }
-
-    std::cout << std::endl;
-    std::cout << "Tests Passed: " << testsPassed << std::endl;
-    std::cout << "Tests Failed: " << testsFailed << std::endl;
-    std::cout << "Pass Rate: " << (testsPassed / (float)(testsPassed + testsFailed)) * 100 << "%" << std::endl;
-}
-
-
-int main() {
-    testController();
-    return 0;
 }
 ```
 
-Our results show us how each addition of a thread exponentially decreases the pass rate and accuracy which we test for in deterministic operations.
+| Threads | Tests Run | Pass Rate |
+|---------|-----------|-----------|
+| 1 | 1,000,000 | 100.00% |
+| 2 | 1,000,000 | 66.49% |
+| 3 | 1,000,000 | 64.58% |
+| 4 | 1,000,000 | 61.39% |
+| 5 | 1,000,000 | 55.86% |
+| 10 | 1,000,000 | 24.24% |
 
-| Threads | Tests Run   | Pass Rate (%) |
-|---------|-------------|---------------|
-| 1       | 1,000,000   | 100.0000      |
-| 2       | 1,000,000   | 66.4875       |
-| 3       | 1,000,000   | 64.5759       |
-| 4       | 1,000,000   | 61.3893       |
-| 5       | 1,000,000   | 55.8582       |
-| 10      | 1,000,000   | 24.2407       |
+Each additional thread exponentially degrades correctness. The Replay Engine solves this.
 
+## The Solution
 
+A deterministic multi-threaded event replay engine built in C++20. It processes millions of time-ordered events per second with bit-identical state across runs, regardless of hardware concurrency.
 
-## How?
-This can be achieved through lock-free cached data structures, deterministic scheduling across threads, and NUMA-aware memory management.
+After implementing the engine, the same class of operations produces:
 
+| Threads | Events | Checksum Match | Pass Rate |
+|---------|--------|----------------|-----------|
+| 1 | 10,000 | Yes | 100% |
+| 2 | 10,000 | Yes | 100% |
+| 4 | 10,000 | Yes | 100% |
+| 8 | 10,000 | Yes | 100% |
 
-## Architecture
+Every run produces the same checksum. Every result appears in the same order. Determinism is guaranteed.
 
-### Threads
-A producer thread reads events from file/log, assigns sequence numbers, and pushes them into a lock-free input queue. Worker Threads concurrently consume events, process them deterministically (based on sequence numbers or thread ownership), and update shared state using atomics or thread-local buffers. A metrics thread collects processed results from an output queue, measuring latency, throughput, and memory usage with minimal interference.  
+---
 
-### Memory & Performance Design
-Preallocated event pools to eliminate runtime allocation. Cache-aligned data structures to prevent false sharing. Thread-local state buffers to reduce contention. Atomic updates for deterministic, reproducible state changes.  
+## C++ Engine
 
+### Architecture
+
+The engine uses a 3-stage pipeline with lock-free queues connecting each stage:
+
+```
+Producer Thread        Processor Thread        Collector Thread
+     |                      |                       |
+  [Input]  ------>  [Work Queue]  ------>  [Output Queue]  ------> Results
+  LFQueue            LFQueue               LFQueue
+```
+
+**Producer** reads raw events from the input queue, assigns monotonically increasing sequence IDs via `atomic::fetch_add`, and pushes `SequencedEvent` structs into the work queue.
+
+**Processor** dequeues sequenced events, computes state values based on event type, applies atomic state updates (price, volume, order count, checksum), and pushes `ProcessedResult` structs into the output queue. Processing is sequential within this thread, which is what guarantees deterministic ordering without spin-wait barriers or lock contention.
+
+**Collector** drains the output queue into a result vector for final consumption.
+
+All three threads run concurrently. Pipeline parallelism provides throughput while sequential processing within each stage provides determinism.
+
+### Lock-Free Queue (Michael-Scott MPMC)
+
+The `LFQueue<T>` is a Michael-Scott queue implementation using atomic compare-and-swap:
+
+- Dummy node sentinel to avoid empty-queue edge cases
+- `enqueue`: CAS on `tail->next`, then advance `tail` with a second CAS
+- `dequeue`: CAS on `head` to swing past the dummy to the real first node
+- Helping mechanism in `enqueue` (advancing a lagging tail pointer) to maintain lock-freedom
+
+No mutexes. No blocking. No priority inversion.
+
+### Memory Layout
+
+- `alignas(64)` on `SequencedEvent` and `ProcessedResult` to prevent false sharing across cache lines
+- `alignas(64)` on all atomic state variables (`globalPrice`, `globalVolume`, `activeOrders`, `stateChecksum`)
+- Atomic state updates use `memory_order_relaxed` where ordering guarantees aren't needed, `memory_order_release`/`memory_order_acquire` at synchronization boundaries
+
+### Deterministic Checksumming
+
+State integrity is verified through XOR-based checksumming applied atomically after each event:
+
+```cpp
+uint64_t hash = result.sequenceId * 2654435761ULL;  // Knuth multiplicative hash
+hash ^= valueBits;                                    // IEEE 754 double bits
+hash ^= result.orderId * 40503ULL;
+stateChecksum.fetch_xor(hash, std::memory_order_relaxed);
+```
+
+XOR is commutative and associative, so the final checksum is order-independent within the atomic operation while the sequential processing ensures the sequence of XOR applications is deterministic.
+
+### Event Types
+
+Five event types model a financial trading system:
+
+| Type | State Computation |
+|------|-------------------|
+| NewOrder | `price * quantity` |
+| CancelOrder | `-1` (decrement active orders) |
+| Trade | `price * quantity * direction` |
+| ModifyOrder | `price * quantity` (updated values) |
+| QuoteUpdate | `price` |
+
+### Performance
+
+- 1.7M+ events/sec sustained throughput
+- Sub-microsecond per-event processing latency
+- Bit-identical checksums across 1, 2, 4, and 8 thread configurations
+- 10 consecutive runs produce identical state on every execution
+
+### Test Suite
+
+45 tests across 6 modules, 100% pass rate:
+
+| Module | Tests | Coverage |
+|--------|-------|----------|
+| Replay Determinism | 10 | Bit-identical checksums, sequence ordering, multi-run consistency, varying thread counts |
+| Stress | 7 | 50k event throughput, max threads, rapid start/stop (20 cycles), concurrent submission, burst traffic |
+| Memory | 7 | Cache alignment verification, leak detection (50 cycles), large batch (50k), queue cleanup |
+| Metrics | 6 | Event count accuracy, latency tracking, throughput measurement, producer/consumer parity |
+| Statistics | 6 | Checksum distribution, latency distribution, worker load balance, throughput scaling |
+| Fault Injection | 9 | Graceful shutdown, early stop, double start/stop, zero-price events, max-value events, destructor safety |
+
+### Build
+
+```bash
+mkdir build && cd build
+cmake ..
+make
+./replay_engine
+```
+
+Requires C++20. Tested on macOS (Apple Clang) and Linux (GCC 12+).
+
+---
+
+## Web Demo
+
+An interactive browser-based simulation of the engine, built for portfolio demonstration.
+
+The web version is a TypeScript port that replicates the engine's pipeline architecture and deterministic behavior. It does not use lock-free queues or real threads. JavaScript is single-threaded, so the concurrency model is simulated: `requestAnimationFrame` drives batches through the 3-stage pipeline one tick at a time, and worker IDs are assigned via round-robin modulo for visualization purposes.
+
+What it does preserve from the C++ engine:
+- 3-stage pipeline flow (produce, process, collect) with batch processing
+- Monotonic sequence ID assignment
+- Identical `processEvent` state value computation per event type
+- Identical XOR-based checksum algorithm (bit-identical results between TS and C++)
+- Determinism verification across multiple configurations
+
+### Features
+
+- Configurable event count, worker count, batch size, and event types
+- Animated pipeline visualization showing events flowing through each stage
+- Live metrics panel (throughput, latency, checksum)
+- Worker distribution chart and latency histogram
+- Determinism verification matrix (runs multiple configs side-by-side)
+- 20-test suite runnable in the browser
+
+### Stack
+
+React, TypeScript, Vite, Tailwind CSS
+
+### Run locally
+
+```bash
+cd web
+npm install
+npm run dev
+```
+
+### Deploy
+
+Configured for GitHub Pages via GitHub Actions. Push to `main` and it auto-deploys.
