@@ -34,11 +34,11 @@ int runTest() {
 | 5 | 1,000,000 | 55.86% |
 | 10 | 1,000,000 | 24.24% |
 
-Each additional thread exponentially degrades correctness. The Replay Engine solves this.
+In this test, the pass rate falls as more threads contend for the shared counter.
 
 ## The Solution
 
-A deterministic multi-threaded event replay engine built in C++20. It processes millions of time-ordered events per second with bit-identical state across runs, regardless of hardware concurrency.
+A C++20 event replay engine that assigns sequence IDs before processing and checks replay results across thread-count configurations.
 
 After implementing the engine, the same class of operations produces:
 
@@ -49,7 +49,7 @@ After implementing the engine, the same class of operations produces:
 | 4 | 10,000 | Yes | 100% |
 | 8 | 10,000 | Yes | 100% |
 
-Every run produces the same checksum. Every result appears in the same order. Determinism is guaranteed.
+The tested configurations produced the same checksum and result order across repeated runs.
 
 ---
 
@@ -83,7 +83,7 @@ The `LFQueue<T>` is a Michael-Scott queue implementation using atomic compare-an
 - `dequeue`: CAS on `head` to swing past the dummy to the real first node
 - Helping mechanism in `enqueue` (advancing a lagging tail pointer) to maintain lock-freedom
 
-No mutexes. No blocking. No priority inversion.
+The queue uses atomic compare-and-swap operations rather than mutex-based coordination. Its lock-free progress guarantee does not imply that every operation completes in a fixed amount of time.
 
 ### Memory Layout
 
